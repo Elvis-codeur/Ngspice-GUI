@@ -1,0 +1,22 @@
+
+.subckt file_4_output 1 2 3 4 
+
+.model filesrc filesource (file="C:\\Users\\Elvis\\Documents\\Code Source\\Python Script\\ngspice\\pwm.m" amploffset=[0 0 0 0 0] amplscale=[1 1 1 1 1]
++timeoffset=0 timescale=1
++timerelative=false amplstep=false)
+
+a8 %vd([1 GND 2 GND 3 GND 4 GND 5 GND]) filesrc
+R1 5 GND 100k
+
+.ends
+
+.subckt file_1_output 1 
+
+.model filesrc filesource (file="pwm1.m" amploffset=[0] amplscale=[1]
++timeoffset=0 timescale=1
++timerelative=false amplstep=false)
+
+a8 %vd([1 GND 2 GND]) filesrc
+R1 2 GND 900K
+
+.ends

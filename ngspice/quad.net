@@ -1,0 +1,19 @@
+* quadrature oscillator
+*==============  Begin SPICE netlist of main design ============
+.include "lm324.model"
+V3 Vcos 5 pulse(0 2.5 0 0 0 100u) dc 0V
+R5 3 unconnected_pin-1 10k
+R4 5 3 1
+XU2 1 4 Vp Vm Vcos LM324
+XU1 0 2 Vp Vm Vsin LM324
+C3 Vcos 4 10n
+R3 4 0 10k
+R1 2 3 10k
+C1 Vsin 2 10n
+R2 1 Vsin 10k
+C2 0 1 10n
+V2 0 Vm DC 2.5V
+V1 Vp 0 DC 2.5V
+.tran 1u 10m
+.end
+

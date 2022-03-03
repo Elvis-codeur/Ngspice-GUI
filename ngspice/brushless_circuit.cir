@@ -1,0 +1,18 @@
+.title KiCad schematic
+.include "DN3491.lib"
+.include "MTB75N05H.lib"
+.include "file_subckt.lib"
+XQ1 Net-_D1-Pad2_ Net-_Q1-Pad1_ out1 MTB75N05H
+V1 VCC out1 12
+R1 VCC Net-_D1-Pad2_ 1k
+XJ1 in file_1_output
+R2 Net-_Q1-Pad1_ in 1k
+D1 out1 Net-_D1-Pad2_ DN3491
+XQ2 out2 Net-_J2-Pad1_ out1 MTB75N05H
+R3 VCC out2 1k
+D2 out1 out2 DN3491
+XJ2 Net-_J2-Pad1_ file_1_output
+CHARGE1 out2 Net-_CHARGE1-Pad2_ 1k
+L1 out1 Net-_CHARGE1-Pad2_ 10m
+.tran 1e-4 20m uic
+.end
