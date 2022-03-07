@@ -43,9 +43,17 @@ class PlottingWidget(QWidget):
         data : the numerical data to plot
         time : the time if it is a transcient analysis
         type : TR,AC"""
+        
+        self.ax.clear()
+
         if(data["type"] == "TR"):
             self.ax.plot(data["time"],data["data"],label=data["label"])
             self.ax.set_xlabel("time")
+            self.ax.set_ylabel(data["label"])
+            self.ax.legend()
+        elif data["type"] == "DC":
+            self.ax.plot(data["v-sweep"],data["data"],label=data["label"])
+            self.ax.set_xlabel("v-sweep")
             self.ax.set_ylabel(data["label"])
             self.ax.legend()
 

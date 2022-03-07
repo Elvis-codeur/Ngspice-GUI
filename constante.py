@@ -1,0 +1,2 @@
+SOFTWARE_NAME = "Ngspice gui"
+SOFTWARE_VERSION = "1.0.0"
