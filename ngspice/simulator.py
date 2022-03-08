@@ -59,6 +59,7 @@ class NgspiceSimulator():
         for i in plot:
             if "const" not in i:
                 vec_names = vector_names(i)
+            
                 p = {}
                 for k in vec_names:
                     p[k] = vector(k)

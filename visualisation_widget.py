@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import sys
 
+import numpy as np
+
 from plotting_widget import PlottingWidget
 from ngspice.process_raw import ProcessRaw
 from ngspice.simulator import NgspiceSimulator
@@ -29,10 +31,11 @@ class VisualisationWidget(QWidget):
     def init_UI(self):
         self.signalViewer.setMaximumWidth(200)
 
+        """
         el = QStandardItem("Elvis")
         el.appendRow([QStandardItem("Elvis1"),QStandardItem("Elvis2")])
         self.signalViewerModel.appendRow(el)
-
+        """
         self.signalViewer.setModel(self.signalViewerModel)
 
         self.layoutPrincipale.addWidget(self.signalViewer)
@@ -61,7 +64,7 @@ class VisualisationWidget(QWidget):
     def add_rows(self,labels):
         self.signalViewerModel = QStandardItemModel()
 
-        print("old signal removed")
+        #print("old signal removed")
         #print("\n",self.datas.keys(),"\n")
         for i in self.datas.keys():
             #print("==={}===".format(i))
@@ -69,16 +72,17 @@ class VisualisationWidget(QWidget):
             k.setEditable(False)
 
             l = []
+            #print("signal name =====",self.datas[i].keys())
             for u in self.datas[i].keys():
                 p = QStandardItem(u)
                 p.setEditable(False)
                 l.append(p)
-            k.appendRow(l)
+
+            k.appendRows(l)
 
             self.signalViewerModel.appendRow(k)
-            
+            self.signalViewer.setModel(self.signalViewerModel)
         print("new signals added")
-        self.signalViewer.reexpand()
 
 
     def p(self):
@@ -120,24 +124,56 @@ class VisualisationWidget(QWidget):
         """
 
     def plot_signal(self,parent_name,signal_name):
+        #print(self.datas)
+        print("len === ",len(self.datas[parent_name][signal_name]))
         try:
             primary_key = self.datas.keys()
             if(parent_name in primary_key):
-                #print("primary key = ",primary_key)
-
                 if(signal_name in self.datas[parent_name]):
-
-                    #print(self.datas[parent_name])
-
                     if("v-sweep" in self.datas[parent_name]):
 
-                        print("data = ",self.datas[parent_name][signal_name])
+                        #print("data = ",self.datas[parent_name][signal_name])
                         self.plottingW.plot({
                             "label" :parent_name + " # " + signal_name,
                             "data" : self.datas[parent_name][signal_name],
                             "v-sweep" : self.datas[parent_name]["v-sweep"],
                             "type" :"DC"
                             })
+
+                    elif ("frequency" in self.datas[parent_name]):
+                        d = self.datas[parent_name][signal_name]
+                        if(d):
+                            for i in d:
+                                print("d == ",d)
+                                gains = []
+                                args = []
+
+                                gain = np.sqrt(i.imag**2 + i.real**2)
+                                gains.append(gain)
+
+                                arg = np.arccos(i.real/gain)
+
+                                if(np.imag > 0):
+                                    args.append(arg)
+                                else:
+                                    args.append(-arg)
+
+                            self.plottingW.plot({
+                            "title" : parent_name + " # " + signal_name,
+                            "gain" : gains,
+                            "phase" : args,
+                            "frequency":self.datas[parent_name]["frequency"],
+                            "type" :"AC"
+                            })
+
+                        else:
+                            print("Unable to plot signal")
+
+
+
+                    elif "time" in self.datas[parent_name]:
+                        print("data = ",self.datas[parent_name][signal_name])
+
 
         except Exception as e:
             print("Execption = ",e)

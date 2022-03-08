@@ -51,10 +51,18 @@ class PlottingWidget(QWidget):
             self.ax.set_xlabel("time")
             self.ax.set_ylabel(data["label"])
             self.ax.legend()
+
         elif data["type"] == "DC":
             self.ax.plot(data["v-sweep"],data["data"],label=data["label"])
             self.ax.set_xlabel("v-sweep")
             self.ax.set_ylabel(data["label"])
+            self.ax.legend()
+            
+        elif data["type"] == "AC":
+            self.ax.plot(data["frequency"],data["gain"],label = "gain")
+            self.ax.plot(data["frequency"],data["phase"],label = "phase")
+            self.set_xlabel("Fréquence")
+            self.ax.set_xscale("log")
             self.ax.legend()
 
 
