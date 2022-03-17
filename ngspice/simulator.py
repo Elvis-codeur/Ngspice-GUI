@@ -78,7 +78,7 @@ class NgspiceSimulator():
 
 if __name__ == "__main__":
     sim = NgspiceSimulator()
-    print(sim.simulate("sim2.cir"))
+    print(sim.simulate_file("rc.cir"))
 
 
 

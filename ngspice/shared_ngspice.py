@@ -97,16 +97,6 @@ class dvec_flags(object):
 #    int v_length;		/* Length of the vector. */
 # } vector_info, *pvector_info;
 
-
-class vector_info(Structure):
-    _fields_ = [
-        ('v_name', c_char_p),
-        ('v_type', c_int),
-        ('v_flags', c_short),
-        ('v_realdata', POINTER(c_double)),
-        ('v_compdata', POINTER(ngcomplex)),
-        ('v_length', c_int)]
-
 class vector_info(Structure):
     _fields_ = [
         ('v_name', c_char_p),
@@ -132,6 +122,61 @@ spice.ngGet_Vec_Info.restype = POINTER(vector_info)
 spice.ngGet_Vec_Info.argtypes = [c_char_p]
 
 captured_output = []
+
+
+# Unit names for use with pint or other unit libraries
+vector_type = [
+    'dimensionless',  # notype = 0
+    'second',  # time = 1
+    'hertz',  # frequency = 2
+    'volt',  # voltage = 3
+    'ampere',  # current = 4
+    'NotImplemented',  # output_n_dens = 5
+    'NotImplemented',  # output_noise = 6
+    'NotImplemented',  # input_n_dens = 7
+    'NotImplemented',  # input_noise = 8
+    'NotImplemented',  # pole = 9
+    'NotImplemented',  # zero = 10
+    'NotImplemented',  # sparam = 11
+    'NotImplemented',  # temp = 12
+    'ohm',  # res = 13
+    'ohm',  # impedance = 14
+    'siemens',  # admittance = 15
+    'watt',  # power = 16
+    'dimensionless'  # phase = 17
+    'NotImplemented',  # db = 18
+    'farad'  # capacitance = 19
+    'coulomb'  # charge = 21
+]
+
+
+#
+# enum simulation_types {
+#   ...
+# };
+class simulation_type(object):
+    notype = 0
+    time = 1
+    frequency = 2
+    voltage = 3
+    current = 4
+    output_n_dens = 5
+    output_noise = 6
+    input_n_dens = 7
+    input_noise = 8
+    pole = 9
+    zero = 10
+    sparam = 11
+    temp = 12
+    res = 13
+    impedance = 14
+    admittance = 15
+    power = 16
+    phase = 17
+    db = 18
+    capacitance = 19
+    charge = 20
+
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -403,7 +448,7 @@ def vector(name, plot=None):
     elif vec.v_flags & dvec_flags.vf_complex:
         components = np.ctypeslib.as_array(vec.v_compdata,
                                            shape=(vec.v_length, 2))
-        array = np.ndarray(shape=(vec.v_length,), dtype=np.complex128,
+        array = np.ndarray(shape=(vec.v_length,), dtype=complex,
                            buffer=components)
     else:
         raise RuntimeError('No valid data in vector')

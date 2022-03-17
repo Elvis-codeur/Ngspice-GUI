@@ -1,4 +1,5 @@
 
+import math
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -125,7 +126,7 @@ class VisualisationWidget(QWidget):
 
     def plot_signal(self,parent_name,signal_name):
         #print(self.datas)
-        print("len === ",len(self.datas[parent_name][signal_name]))
+        #print("len === ",len(self.datas[parent_name][signal_name]))
         try:
             primary_key = self.datas.keys()
             if(parent_name in primary_key):
@@ -137,48 +138,55 @@ class VisualisationWidget(QWidget):
                             "label" :parent_name + " # " + signal_name,
                             "data" : self.datas[parent_name][signal_name],
                             "v-sweep" : self.datas[parent_name]["v-sweep"],
-                            "type" :"DC"
+                            "type" :"DC",
+                            "signature" : parent_name + " # " + signal_name
                             })
 
                     elif ("frequency" in self.datas[parent_name]):
-                        d = self.datas[parent_name][signal_name]
+                        d = list(self.datas[parent_name][signal_name])
+
                         if(d):
+                            gain = []
+                            phase = []
                             for i in d:
-                                print("d == ",d)
-                                gains = []
-                                args = []
+                                c = complex(i)
+                                module = c.real*c.real + c.imag*c.imag
+                                arg = math.acos(c.real/module)*180/math.pi
 
-                                gain = np.sqrt(i.imag**2 + i.real**2)
-                                gains.append(gain)
-
-                                arg = np.arccos(i.real/gain)
-
-                                if(np.imag > 0):
-                                    args.append(arg)
-                                else:
-                                    args.append(-arg)
+                                
+                                gain.append(module)
+                                phase.append(arg)
 
                             self.plottingW.plot({
-                            "title" : parent_name + " # " + signal_name,
-                            "gain" : gains,
-                            "phase" : args,
-                            "frequency":self.datas[parent_name]["frequency"],
-                            "type" :"AC"
+                              "frequency":self.datas[parent_name]["frequency"],
+                              "phase":phase,
+                              "gain":gain,
+                              "type":"AC",
+                              "signature" : parent_name + " # " + signal_name 
                             })
 
                         else:
                             print("Unable to plot signal")
-
-
-
                     elif "time" in self.datas[parent_name]:
-                        print("data = ",self.datas[parent_name][signal_name])
+
+                        self.plottingW.plot({
+                            "label" :parent_name + " # " + signal_name,
+                            "data" : self.datas[parent_name][signal_name],
+                            "time" : self.datas[parent_name]["time"],
+                            "type" :"TR",
+                            "signature" : parent_name + " # " + signal_name
+                            
+                            })
+
+                        #print("data = ",self.datas[parent_name][signal_name])
+
 
 
         except Exception as e:
             print("Execption = ",e)
-
-        
+            #d = self.datas[parent_name][signal_name]
+            #print(d[23])
+            #print(type(d[23]))
         """try:
             if signal_name not in self.datas.keys():
                 print("Signal inexistant")

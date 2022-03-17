@@ -1,0 +1,45 @@
+.title KiCad schematic
+.include "C:\Users\Elvis\3D Objects\Electronique\KICAD\KICAD 6\brushless_1\irf7401_IR.lib"
+.include "C:\Users\Elvis\3D Objects\Electronique\KICAD\KICAD 6\brushless_1\lm324.model"
+C5 vout Net-_C5-Pad2_ 20m
+XQ2 Net-_L1-Pad1_ cmd2 GND irf7401_IR
+L1 Net-_L1-Pad1_ vout 0.5m
+XQ3 VCC cmd2 Net-_C5-Pad2_ irf7401_IR
+XQ1 VCC cmd1 Net-_L1-Pad1_ irf7401_IR
+XQ4 Net-_C5-Pad2_ cmd1 GND irf7401_IR
+R2 vout Net-_C5-Pad2_ 1
+V3 VCC GND dc 12
+V1 triangle GND pulse(-6 6 0 495u 495u 10u 1m)
+XU2 sin triangle VCC GND cmd2 LM324
+XU1 triangle sin VCC GND cmd1 LM324
+V2 sin GND sin(0 2 50 0 0)
+C1 VCC GND 10u
+C3 VCC GND 10u
+C2 VCC GND 10u
+.save @c5[i]
+.save @l1[i]
+.save @r2[i]
+.save @v3[i]
+.save @v1[i]
+.save @v2[i]
+.save @c1[i]
+.save @c3[i]
+.save @c2[i]
+.save V(Net-_C5-Pad2_)
+.save V(Net-_L1-Pad1_)
+.save V(VCC)
+.save V(cmd1)
+.save V(cmd2)
+.save V(sin)
+.save V(triangle)
+.save V(unconnected-_U1-Pad1_)
+.save V(unconnected-_U1-Pad5_)
+.save V(unconnected-_U1-Pad8_)
+.save V(unconnected-_U2-Pad1_)
+.save V(unconnected-_U2-Pad5_)
+.save V(unconnected-_U2-Pad8_)
+.save V(vout)
+.tran 1u 200m 
+
+.end
+

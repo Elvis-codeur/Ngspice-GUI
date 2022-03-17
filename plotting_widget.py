@@ -24,6 +24,12 @@ class PlottingWidget(QWidget):
         
         self.layoutPrincipale = QVBoxLayout()
 
+        self.plot_dict = {}
+        self.plot_dict["TRAN"] = {}
+        self.plot_dict["DC"] = {}
+        self.plot_dict["AC"] = {}
+
+
         self.init_UI()
 
 
@@ -44,26 +50,66 @@ class PlottingWidget(QWidget):
         time : the time if it is a transcient analysis
         type : TR,AC"""
         
-        self.ax.clear()
+        #self.ax.clear()
 
         if(data["type"] == "TR"):
-            self.ax.plot(data["time"],data["data"],label=data["label"])
-            self.ax.set_xlabel("time")
-            self.ax.set_ylabel(data["label"])
-            self.ax.legend()
+            if data["signature"] in self.plot_dict["TRAN"].keys():
+                line = self.plot_dict["TRAN"][data["signature"]].pop(0)
+                line.remove()
+                self.ax.legend()
+
+            else:
+                
+                plot = self.ax.plot(data["time"],data["data"],label=data["label"])
+                self.ax.set_xlabel("time")
+                self.ax.set_ylabel(data["label"])
+                self.ax.legend()
+
+                self.plot_dict["TRAN"][data["signature"]] =  plot
+                #print(self.plot_dict)
+                #print(help(self.ax))
 
         elif data["type"] == "DC":
-            self.ax.plot(data["v-sweep"],data["data"],label=data["label"])
-            self.ax.set_xlabel("v-sweep")
-            self.ax.set_ylabel(data["label"])
-            self.ax.legend()
+            if data["signature"] in self.plot_dict["DC"].keys():
+                line = self.plot_dict["DC"][data["signature"]].pop(0)
+                line.remove()
+                self.ax.legend()
+
+            else:
+                plot = self.ax.plot(data["v-sweep"],data["data"],label=data["label"])
+                self.ax.set_xlabel("v-sweep")
+                self.ax.set_ylabel(data["label"])
+                self.ax.legend()
+                self.plot_dict["DC"][data["signature"]] = plot
+
             
         elif data["type"] == "AC":
-            self.ax.plot(data["frequency"],data["gain"],label = "gain")
-            self.ax.plot(data["frequency"],data["phase"],label = "phase")
-            self.set_xlabel("Fréquence")
-            self.ax.set_xscale("log")
-            self.ax.legend()
+            if data["signature"] in self.plot_dict["AC"].keys():
+                line1,line2 = self.plot_dict["AC"][data["signature"]]
+
+                # Remove the plots
+                line1 = line1.pop(0)
+                line1.remove()
+                line2 = line2.pop(0)
+                line2.remove()
+
+                self.ax.legend()
+            else:
+
+                plot = self.ax.plot(data["frequency"],data["gain"],label = "gain")
+                self.ax.set_ylabel("Gain")
+                self.ax.set_xlabel("Fréquence")
+                self.ax.set_xscale("log")
+                self.ax.legend()
+
+                self.ax2 = self.ax.twinx()
+                plot2 = self.ax2.plot(data["frequency"],data["phase"],label = "phase",color="red")
+                self.ax2.set_ylabel("Phase")
+                self.ax2.set_xlabel("Fréquence")
+                self.ax2.set_xscale("log")
+                self.ax2.legend()
+
+                self.plot_dict["AC"][data["signature"]] = plot,plot2
 
 
 

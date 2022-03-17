@@ -1,12 +1,12 @@
 .title KiCad schematic
-R1 out /entree 1k
-C1 out GND 10n
-V1 /entree GND dc 1 ac 1 0
+R1 vout Net-_R1-Pad2_ 1k
+C1 vout GND 1nu
+V1 Net-_R1-Pad2_ GND dc 1 ac 1 0
 .save @r1[i]
 .save @c1[i]
 .save @v1[i]
-.save V(/entree)
-.save V(out)
-.ac dec 10 1 2.5k 
+.save V(Net-_R1-Pad2_)
+.save V(vout)
+.ac dec 100 1 1Meg 
 .end
 

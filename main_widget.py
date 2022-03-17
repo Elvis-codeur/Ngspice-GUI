@@ -170,7 +170,6 @@ class MainWidget(QMainWindow):
 
         font = fontdialog.getFont()
         self.netlistEditorWidget.setFont(font[0])
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = MainWidget()
