@@ -151,7 +151,11 @@ class VisualisationWidget(QWidget):
                             for i in d:
                                 c = complex(i)
                                 module = c.real*c.real + c.imag*c.imag
-                                arg = math.acos(c.real/module)*180/math.pi
+                                j = c.real / module 
+                                if j > 1.0:
+                                    j =  1.0
+
+                                arg = math.acos(j)*180/math.pi
 
                                 
                                 gain.append(module)

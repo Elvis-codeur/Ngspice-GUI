@@ -53,26 +53,26 @@ class MainWidget(QMainWindow):
         self.menuFichier.addAction(self.ouvrirAction)
         self.ouvrirAction.triggered.connect(self.open_file)
 
-        self.saveAction = QAction(QIcon("save.png"),"Enrégistrer")
+        self.saveAction = QAction(QIcon("icons/save.png"),"Enrégistrer")
         self.saveAction.setShortcut(QKeySequence("Ctrl+S"))
         self.menuFichier.addAction(self.saveAction)
         self.saveAction.triggered.connect(self.save)
 
-        self.saveasAction = QAction(QIcon("save_as.png"), "Enrégistrer comme")
+        self.saveasAction = QAction(QIcon("icons/save_as.png"), "Enrégistrer comme")
         self.saveasAction.setShortcut(QKeySequence("Ctrl+Shift+S"))
         self.menuFichier.addAction(self.saveasAction)
         self.saveAction.triggered.connect(self.save_as)
 
-        self.actionFont = QAction(QIcon("font.png"),"Font")
+        self.actionFont = QAction(QIcon("icons/font.png"),"Font")
         self.actionFont.triggered.connect(self.set_font)
         
 
-        self.runAction = QAction(QIcon("play.png"),"Simuler")
+        self.runAction = QAction(QIcon("icons/play.png"),"Simuler")
         self.runAction.setToolTip("Simuler")
         self.runAction.triggered.connect(self.run_simulation)
         self.menuSimulation.addAction(self.runAction)
         
-
+        
         self.toolbar.addAction(self.actionFont)
         self.toolbar.addAction(self.runAction)
 

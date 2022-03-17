@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 #print("\n\n\n",os.path.join(os.getcwd(),"ngspice.dll"))
 
-spice = CDLL(os.path.join(os.getcwd(),"ngspice.dll"))
+spice = CDLL(os.path.join(os.getcwd(),"bin/ngspice.dll"))
 
 # typedef struct vecvalues {
 # char* name; /* name of a specific vector */

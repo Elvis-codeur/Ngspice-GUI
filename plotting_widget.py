@@ -58,6 +58,7 @@ class PlottingWidget(QWidget):
                 line.remove()
                 self.ax.legend()
 
+                self.plot_dict["TRAN"].pop(data["signature"])
             else:
                 
                 plot = self.ax.plot(data["time"],data["data"],label=data["label"])
@@ -74,6 +75,7 @@ class PlottingWidget(QWidget):
                 line = self.plot_dict["DC"][data["signature"]].pop(0)
                 line.remove()
                 self.ax.legend()
+                self.plot_dict["DC"].pop(data["signature"])
 
             else:
                 plot = self.ax.plot(data["v-sweep"],data["data"],label=data["label"])
@@ -94,9 +96,12 @@ class PlottingWidget(QWidget):
                 line2.remove()
 
                 self.ax.legend()
+                self.ax2.legend()
+
+                self.plot_dict["AC"].pop(data["signature"])
             else:
 
-                plot = self.ax.plot(data["frequency"],data["gain"],label = "gain")
+                plot = self.ax.plot(data["frequency"],data["gain"],label = "gain",color="blue")
                 self.ax.set_ylabel("Gain")
                 self.ax.set_xlabel("Fréquence")
                 self.ax.set_xscale("log")
